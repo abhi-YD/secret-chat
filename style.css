@@ -1,0 +1,314 @@
+/* ── RESET ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── VARIABLES ── */
+:root {
+  --bg:       #0e0e0f;
+  --surface:  #161618;
+  --surface2: #1e1e21;
+  --border:   rgba(255, 255, 255, 0.07);
+  --border2:  rgba(255, 255, 255, 0.13);
+  --text:     #e8e6e1;
+  --muted:    #6b6969;
+  --accent:   #c8a96e;
+  --accent2:  #8b7355;
+  --danger:   #e05555;
+  --mono:     'DM Mono', monospace;
+  --serif:    'Instrument Serif', serif;
+}
+
+/* ── BASE ── */
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--mono);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* subtle grid background */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── LAYOUT ── */
+.wrapper {
+  position: relative;
+  z-index: 1;
+  width: 420px;
+  max-width: 95vw;
+}
+
+/* ── SCREEN TRANSITIONS ── */
+.screen {
+  display: none;
+  animation: fadeUp 0.35s ease forwards;
+}
+.screen.active {
+  display: block;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── INPUTS ── */
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 6px;
+  padding: 11px 14px;
+  font-family: var(--mono);
+  font-size: 14px;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+}
+input[type="text"]:focus,
+input[type="password"]:focus {
+  border-color: var(--accent2);
+}
+input::placeholder {
+  color: var(--muted);
+}
+
+/* ── BUTTONS ── */
+.btn {
+  width: 100%;
+  background: var(--accent);
+  color: #1a1408;
+  border: none;
+  border-radius: 6px;
+  padding: 11px 14px;
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  transition: opacity 0.2s, transform 0.1s;
+  margin-top: 12px;
+}
+.btn:hover  { opacity: 0.88; }
+.btn:active { transform: scale(0.98); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  font-size: 11px;
+  margin-top: 8px;
+  padding: 8px 14px;
+}
+.btn-ghost:hover {
+  color: var(--text);
+  border-color: var(--border2);
+}
+
+.icon-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 11px;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: var(--mono);
+  transition: color 0.2s, border-color 0.2s;
+}
+.icon-btn:hover        { color: var(--text); border-color: var(--border2); }
+.icon-btn.danger:hover { color: var(--danger); }
+
+.send-btn {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 6px;
+  padding: 0 14px;
+  color: var(--accent);
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.send-btn:hover { background: var(--surface2); }
+
+/* ── SETUP SCREEN ── */
+.setup-header {
+  margin-bottom: 32px;
+}
+.eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.setup-header h1 {
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--text);
+  font-style: italic;
+  line-height: 1.2;
+}
+.setup-header p {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 8px;
+  line-height: 1.6;
+}
+.field-label {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.err {
+  font-size: 11px;
+  color: var(--danger);
+  margin-top: 8px;
+  min-height: 16px;
+}
+
+/* ── LOCK SCREEN ── */
+.lock-wrap {
+  text-align: center;
+  padding: 40px 0;
+}
+.lock-icon {
+  width: 56px;
+  height: 56px;
+  border: 1px solid var(--border2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 22px;
+}
+.lock-title {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-style: italic;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.lock-sub {
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+  margin-bottom: 28px;
+}
+.dots-row {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  min-height: 12px;
+}
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--border2);
+  transition: background 0.15s, transform 0.15s;
+}
+.dot.active {
+  background: var(--accent);
+  transform: scale(1.2);
+}
+.lock-hint {
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ── CHAT SCREEN ── */
+.chat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.chat-title {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-style: italic;
+  color: var(--text);
+}
+.chat-actions {
+  display: flex;
+  gap: 8px;
+}
+.messages-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+  height: 300px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 12px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border2) transparent;
+}
+.msg-system {
+  text-align: center;
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 0;
+}
+.msg-bubble {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 13px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text);
+  align-self: flex-end;
+  max-width: 90%;
+  word-break: break-word;
+  animation: fadeUp 0.2s ease;
+}
+.msg-time {
+  font-size: 9px;
+  color: var(--muted);
+  margin-top: 4px;
+  text-align: right;
+  letter-spacing: 0.05em;
+}
+.input-row {
+  display: flex;
+  gap: 8px;
+}
+.input-row input {
+  flex: 1;
+}
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 16px 0;
+}
