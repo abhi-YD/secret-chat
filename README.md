@@ -73,9 +73,7 @@ secret-chat/
 
 ## 🌐 Live Demo via GitHub Pages
 
-1. Go to repo → **Settings → Pages**
-2. Source → `main` branch → `/ (root)` → **Save**
-3. Live at: `https://yourusername.github.io/secret-chat/`
+1. Live at: `https://abhi-yd.github.io/secret-chat/`
 
 ---
 
