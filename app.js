@@ -7,6 +7,21 @@ let secretCode = localStorage.getItem('_sc') || '';
 let buffer = '';
 let bufferTimer = null;
 
+// After: let bufferTimer = null;
+
+function focusLockInput() {
+  const inp = document.getElementById('lock-input');
+  if (inp) inp.focus();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('lock-input').addEventListener('input', function () {
+    const chars = this.value;
+    this.value = '';
+    for (const ch of chars) { handleKey({ key: ch }); }
+  });
+});
+
 // ── DOM REFERENCES ──
 const screens = {
   setup: document.getElementById('screen-setup'),
@@ -58,6 +73,7 @@ function doSetup() {
   showScreen('lock');
   renderDots(0);
   window.addEventListener('keydown', handleKey);
+  focusLockInput(); 
 }
 
 // ── DOTS ──
@@ -111,6 +127,7 @@ function lockChat() {
   renderDots(0);
   els.lockHint.textContent = 'start typing…';
   window.addEventListener('keydown', handleKey);
+  focusLockInput(); 
 }
 
 // ── MESSAGES ──
@@ -192,6 +209,7 @@ els.resetBtn.addEventListener('click', resetAll);
     showScreen('lock');
     renderDots(0);
     window.addEventListener('keydown', handleKey);
+    focusLockInput(); 
   } else {
     showScreen('setup');
   }
