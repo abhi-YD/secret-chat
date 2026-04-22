@@ -157,45 +157,52 @@ function renderDots(count) {
 // ── KEY LISTENER ──
 // ──────────────────────────────────────────
 
+// ── PROCESS A SINGLE CHARACTER INTO THE BUFFER ──
+// Called by both the keydown listener (desktop) and the hidden input (mobile).
+// Kept separate so neither path double-processes the same character.
+function processChar(ch) {
+  buffer += ch;
+  renderDots(Math.min(buffer.length, MAX_DOTS));
+  els.lockHint.textContent = '···';
+
+  clearTimeout(bufferTimer);
+  bufferTimer = setTimeout(() => {
+    buffer = '';
+    renderDots(0);
+    els.lockHint.textContent = 'start typing…';
+  }, BUFFER_TIMEOUT);
+
+  if (buffer.length >= codeLen) {
+    const candidate = buffer.slice(-codeLen);
+    hashCode(candidate).then(h => {
+      if (h === storedHash) {
+        buffer = '';
+        clearTimeout(bufferTimer);
+        window.removeEventListener('keydown', handleKey);
+        secretCode = candidate; // restore raw code in memory for decryption
+        unlockChat();
+      }
+    });
+  }
+}
+
+// ── KEYDOWN LISTENER (desktop fallback) ──
+// Only runs when the hidden input does NOT have focus.
+// When lock-input is focused, the 'input' event below handles typing instead.
 function handleKey(e) {
   if (!storedHash) return;
-  // If the hidden lock-input has focus, the 'input' event already handled this keystroke.
-  // Skip here to prevent every character being processed twice on desktop.
   if (document.activeElement === document.getElementById('lock-input')) return;
 
   if (e.key.length === 1) {
-    buffer += e.key;
-    renderDots(Math.min(buffer.length, MAX_DOTS));
-    els.lockHint.textContent = '···';
-
-    clearTimeout(bufferTimer);
-    bufferTimer = setTimeout(() => {
-      buffer = '';
-      renderDots(0);
-      els.lockHint.textContent = 'start typing…';
-    }, BUFFER_TIMEOUT);
-
-    // Once buffer is long enough, check the last N chars against the stored hash
-    if (buffer.length >= codeLen) {
-      const candidate = buffer.slice(-codeLen);
-      hashCode(candidate).then(h => {
-        if (h === storedHash) {
-          buffer = '';
-          clearTimeout(bufferTimer);
-          window.removeEventListener('keydown', handleKey);
-          secretCode = candidate; // restore raw code in memory for decryption
-          unlockChat();
-        }
-      });
-    }
-
+    processChar(e.key);
   } else if (e.key === 'Backspace') {
     buffer = buffer.slice(0, -1);
     renderDots(Math.min(buffer.length, MAX_DOTS));
   }
 }
 
-// ── MOBILE: hidden input focus ──
+// ── HIDDEN INPUT (mobile + desktop when focused) ──
+// Feeds typed characters directly into processChar — bypasses handleKey entirely.
 function focusLockInput() {
   const inp = document.getElementById('lock-input');
   if (inp) inp.focus();
@@ -204,7 +211,7 @@ function focusLockInput() {
 document.getElementById('lock-input').addEventListener('input', function () {
   const chars = this.value;
   this.value = '';
-  for (const ch of chars) { handleKey({ key: ch }); }
+  for (const ch of chars) { processChar(ch); } // call processChar directly, not handleKey
 });
 
 // ──────────────────────────────────────────
