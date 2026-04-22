@@ -1,5 +1,4 @@
 # 🔒 Secret Chat
-
 A hidden chat that only appears when you type your secret code. No server. No login. No internet needed.
 
 ![HTML](https://img.shields.io/badge/HTML-5-orange?style=flat-square)
@@ -17,6 +16,8 @@ A hidden chat that only appears when you type your secret code. No server. No lo
 - 🌙 Dark theme with minimal design
 - 📴 Works fully offline — no internet required
 - 🧹 Clear, Lock, and Reset options built in
+- > 🔑 **Password is hashed using SHA-256** — your secret code is never stored in plain text
+- > 🛡️ **Messages are AES-GCM encrypted** — stored data is fully encrypted and unreadable without your code
 
 ---
 
@@ -58,8 +59,14 @@ secret-chat/
 |---|---|
 | Code detection | `keydown` listener buffers every keystroke |
 | Unlock | Buffer matches code → chat screen shown |
-| Storage | `localStorage` — `_sc` = code, `_msgs` = messages |
+| Storage | `localStorage` — `_sc_hash` = SHA-256 hashed code, `_sc_len` = code length, `_msgs` = AES-GCM encrypted messages |
 | Lock | Hides chat, re-enables keydown listener |
+
+### 🔐 Security Details
+
+> **Password Hashing** — Your secret code is hashed with SHA-256 via the Web Crypto API before being stored. The raw code is never written to disk or localStorage. On unlock, only the last N typed characters are hashed and compared — the plaintext code never leaves memory.
+
+> **Message Encryption** — Every message is encrypted with AES-GCM (256-bit) using a key derived from your secret code via PBKDF2 (100,000 iterations). Each message gets a unique random IV. Without the correct code, the stored data is completely unreadable.
 
 ---
 
