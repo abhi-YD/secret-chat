@@ -28,24 +28,18 @@
     </div>
 
     <!-- LOCK SCREEN -->
-    <!-- <div class="screen" id="screen-lock">
-      <div class="lock-wrap">
+    <div class="screen" id="screen-lock">
+      <input id="lock-input" type="text" inputmode="text"
+        autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+        style="position:fixed;opacity:0;width:0;height:0;border:none;padding:0;pointer-events:none;"
+        aria-hidden="true" tabindex="-1" />
+      <div class="lock-wrap" onclick="focusLockInput()">
         <div class="lock-icon">🔒</div>
         <div class="lock-title">Chat is hidden</div>
-        <div class="lock-sub">Type your secret code to unlock</div> -->
-      <div class="screen" id="screen-lock">
-        <input id="lock-input" type="text" inputmode="text"
-          autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
-          style="position:fixed;opacity:0;width:0;height:0;border:none;padding:0;pointer-events:none;"
-          aria-hidden="true" tabindex="-1" />
-        <div class="lock-wrap" onclick="focusLockInput()">
-          <div class="lock-sub">Tap here, then type your secret code</div>
-
-
-        
+        <div class="lock-sub">Tap here, then type your secret code</div>
         <div class="dots-row" id="dots-row"></div>
         <div class="lock-hint" id="lock-hint">start typing…</div>
-      </div>
+      </div><!-- end lock-wrap -->
     </div>
 
     <!-- CHAT SCREEN -->
