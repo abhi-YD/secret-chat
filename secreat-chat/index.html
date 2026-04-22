@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Secret Chat</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="wrapper">
+
+    <!-- SETUP SCREEN -->
+    <div class="screen active" id="screen-setup">
+      <div class="setup-header">
+        <div class="eyebrow">Secret Chat</div>
+        <h1>Set your unlock code</h1>
+        <p>Choose any word or phrase. Type it anywhere on screen to reveal your chat.</p>
+      </div>
+      <div class="field-label">Unlock code</div>
+      <input type="password" id="setup-code" placeholder="enter secret code..." />
+      <div class="field-label" style="margin-top:14px;">Confirm code</div>
+      <input type="password" id="setup-confirm" placeholder="type again..." />
+      <div class="err" id="setup-err"></div>
+      <button class="btn" id="save-btn">Save & hide chat →</button>
+    </div>
+
+    <!-- LOCK SCREEN -->
+    <div class="screen" id="screen-lock">
+      <input id="lock-input" type="text" inputmode="text"
+        autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+        style="position:fixed;opacity:0;width:0;height:0;border:none;padding:0;pointer-events:none;"
+        aria-hidden="true" tabindex="-1" />
+      <div class="lock-wrap" onclick="focusLockInput()">
+        <div class="lock-icon">🔒</div>
+        <div class="lock-title">Chat is hidden</div>
+        <div class="lock-sub">Tap here, then type your secret code</div>
+        <div class="dots-row" id="dots-row"></div>
+        <div class="lock-hint" id="lock-hint">start typing…</div>
+      </div><!-- end lock-wrap -->
+    </div>
+
+    <!-- CHAT SCREEN -->
+    <div class="screen" id="screen-chat">
+      <div class="chat-header">
+        <div class="chat-title">Secret Chat</div>
+        <div class="chat-actions">
+          <button class="icon-btn" id="clear-btn">clear</button>
+          <button class="icon-btn" id="lock-btn">lock</button>
+          <button class="icon-btn danger" id="reset-btn">reset</button>
+        </div>
+      </div>
+      <div class="messages-box" id="messages">
+        <div class="msg-system">chat unlocked · <span id="unlock-date"></span></div>
+      </div>
+      <div class="input-row">
+        <input type="text" id="msg-input" placeholder="write something…" />
+        <button class="send-btn" id="send-btn">↑</button>
+      </div>
+      <div class="divider"></div>
+      <button class="btn btn-ghost" id="lock-btn-bottom">🔒 Lock chat</button>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
