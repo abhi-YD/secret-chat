@@ -159,6 +159,9 @@ function renderDots(count) {
 
 function handleKey(e) {
   if (!storedHash) return;
+  // If the hidden lock-input has focus, the 'input' event already handled this keystroke.
+  // Skip here to prevent every character being processed twice on desktop.
+  if (document.activeElement === document.getElementById('lock-input')) return;
 
   if (e.key.length === 1) {
     buffer += e.key;
